@@ -2,9 +2,9 @@ CREATE DATABASE cats_api;
 
 USE cats_api;
 
-CREATE TABLE cats(
-    id INT PRIMARY KEY,
+CREATE TABLE cats (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     cat_name VARCHAR(255) NOT NULL,
-    breed VARCHAR(255),
-    age INT
+    breed VARCHAR(255) NOT NULL,
+    age INT NOT NULL
 );
