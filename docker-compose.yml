@@ -16,20 +16,29 @@ services:
       - START_AFTER_INIT=Y
       - ROOT_PASSWORD=root
     networks:
-      - app
+      - net
   app:
     build:
       context: .
     networks:
-      - app
+      - net
     ports:
       - 3000:3000
     depends_on:
       - singlestore
 
+  forwarder:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    networks:
+      - net
+
 volumes:
   db-data:
 
 networks:
-  app:
+  net:
     driver: bridge
