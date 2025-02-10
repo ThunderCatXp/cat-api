@@ -1,3 +1,6 @@
 .env.example
 .gitignore
 *.md
+kube
+README.md
+nginx
