@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   singlestore:
     image: memsql/cluster-in-a-box
@@ -15,17 +13,21 @@ services:
       - LICENSE_KEY=${LICENSE_KEY}
       - START_AFTER_INIT=Y
       - ROOT_PASSWORD=root
+    cpus: 2.0
+    mem_limit: 1G
     networks:
       - net
+
   app:
     build:
       context: .
-    networks:
-      - net
     ports:
       - 3000:3000
     depends_on:
       - singlestore
+    cpus: 0.5
+    networks:
+      - net
 
   forwarder:
     build: ./nginx
@@ -33,6 +35,7 @@ services:
       - 80:80
     depends_on:
       - app
+    cpus: 0.5
     networks:
       - net
 

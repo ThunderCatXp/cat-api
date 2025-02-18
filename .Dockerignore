@@ -4,3 +4,6 @@
 kube
 README.md
 nginx
+.github
+docker-compose.yml
+**/node_modules/
