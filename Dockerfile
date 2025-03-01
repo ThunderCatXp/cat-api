@@ -23,3 +23,6 @@ COPY --from=build /app /app
 
 EXPOSE 3000
 CMD [ "bun", "dev" ]
+
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/*

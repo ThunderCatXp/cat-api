@@ -13,8 +13,8 @@ services:
       - LICENSE_KEY=${LICENSE_KEY}
       - START_AFTER_INIT=Y
       - ROOT_PASSWORD=root
-    cpus: 2.0
-    mem_limit: 1G
+    cpus: 4
+    mem_limit: 8G
     networks:
       - net
 
@@ -35,9 +35,22 @@ services:
       - 80:80
     depends_on:
       - app
+      - singlestore
     cpus: 0.5
     networks:
       - net
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    cpus: 0.5
+    networks:
+      - net
+    volumes:
+      - ./init.sql:/init.sql
+    environment:
+      - REDIS_PASSWORD=root
 
 volumes:
   db-data:
