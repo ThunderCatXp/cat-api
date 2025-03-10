@@ -21,8 +21,6 @@ services:
   app:
     build:
       context: .
-    ports:
-      - 3000:3000
     depends_on:
       - singlestore
     cpus: 0.5
@@ -51,6 +49,29 @@ services:
       - ./init.sql:/init.sql
     environment:
       - REDIS_PASSWORD=root
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    networks:
+      - net
+    depends_on:
+      - app
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    networks:
+      - net
+    depends_on:
+      - app
+      - grafana
+    volumes:
+      - ./config/:/etc/prometheus/
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
 
 volumes:
   db-data:

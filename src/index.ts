@@ -5,7 +5,7 @@ import { rateLimiter, Store } from 'hono-rate-limiter';
 import {DatabaseError, ValidationError} from './errors.ts'
 import { createClient } from 'redis'
 import { RedisStore } from 'rate-limit-redis'
-
+import { prometheus } from '@hono/prometheus'
 
 const client = createClient({
   url: process.env.REDIS_URL!,
@@ -18,7 +18,7 @@ await client.connect()
 
 const limiter = rateLimiter({
   windowMs: 15 * 60 * 10000, // 15 minutes
-  limit: 100000, // Max 100 requests per window
+  limit: 100000, // Max 100000 requests per window
   keyGenerator: (c) => c.req.header("cf-connecting-ip") ?? "",
 	standardHeaders: true,
   store: new RedisStore({
@@ -28,7 +28,13 @@ const limiter = rateLimiter({
 
 const app = new Hono();
 
-app.use('*', limiter);
+const { printMetrics, registerMetrics } = prometheus()
+
+app.get('/metrics', printMetrics) 
+
+app.use('*', limiter, registerMetrics);
+
+app.get('/', (c) => c.text('Cats API'))
 
 app.post('/cats', async (ctx) => {
   const { cat_name, breed, age } = await ctx.req.json();
