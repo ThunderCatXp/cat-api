@@ -35,7 +35,7 @@ app.get('/metrics', printMetrics)
 
 app.use('*', limiter, registerMetrics);
 
-app.get('/', (c) => c.text('Cats API \n \n' + cat + '\n \n Documentation: https://github.com/ThunderCatXp/cat-api'))
+app.get('/', (c) => c.text('Cats API \n \n' + cat + '\n \n Documentation: https://github.com/ThunderCatXp/catAPI'))
 
 app.post('/cats', async (ctx) => {
   const { cat_name, breed, age } = await ctx.req.json();
