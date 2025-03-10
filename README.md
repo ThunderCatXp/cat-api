@@ -9,3 +9,9 @@
 
 Cat API is a simple HTTP server that provides a RESTful interface for interacting with SingleStore. It allows you to perform basic CRUD operations on tables.
 Made for testing and development purposes.
+
+## Run API
+
+```bash
+docker-compose up -d 
+```

@@ -6,6 +6,7 @@ import {DatabaseError, ValidationError} from './errors.ts'
 import { createClient } from 'redis'
 import { RedisStore } from 'rate-limit-redis'
 import { prometheus } from '@hono/prometheus'
+import { cat } from './cat.ts';
 
 const client = createClient({
   url: process.env.REDIS_URL!,
@@ -34,7 +35,7 @@ app.get('/metrics', printMetrics)
 
 app.use('*', limiter, registerMetrics);
 
-app.get('/', (c) => c.text('Cats API'))
+app.get('/', (c) => c.text('Cats API \n \n' + cat + '\n \n Documentation: https://github.com/ThunderCatXp/cat-api'))
 
 app.post('/cats', async (ctx) => {
   const { cat_name, breed, age } = await ctx.req.json();
